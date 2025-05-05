@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  //output   = "../generated/prisma"
+  output = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// enum UserRole {
+//   STAFF
+//   ADMIN
+// }
+
+model User {
+  id           Int  @id @unique @default(autoincrement())
+  auth_id      String? @unique
+  username     String @unique
+  display_name String?
+  created_at   DateTime @default(now())
+  // updated_at   DateTime @updatedAt
+  // deleted      DateTime? 
+  // role         UserRole?
+  observations Observation[]
+}
+
+// model Animal {
+//   id          Int @id @unique @default(autoincrement())
+//   taxon       String?
+//   assigned_id String?
+//   animal_name String
+//   observations  Observation[]
+// }
+
+model Behavior {
+  id                Int @id @unique @default(autoincrement())
+  behavior_name     String
+  description       String? 
+  observations      Observation[]
+  created_at        DateTime @default(now())
+  // updated_at   DateTime @updatedAt
+  // deleted      DateTime? 
+  // type         UserType?
+}
+
+model Observation {
+  id          Int @id @unique @default(autoincrement())
+  behavior_id Int 
+  behavior    Behavior @relation(fields: [behavior_id], references: [id])
+  animal_name String
+  observer_id Int
+  observer    User  @relation(fields: [observer_id], references: [id])
+  // animal_id   Int?
+  // animal      Animal? @relation(fields: [animal_id], references: [id])
+  observed_at   DateTime @default(now())
+  created_at    DateTime @default(now())
+  // updated_at   DateTime @updatedAt
+  // deleted      DateTime? 
+  // type         UserType?
+}
