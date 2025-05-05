@@ -1,2 +1,44 @@
 # zoo_backend
-Backend for the Henry Doorly Zoo coding challenge
+
+#Requirements:
+Node ~22.15
+NPM ~11.3.0
+PostGreSQL ~14.1 running locally
+
+#To Install:
+
+1. Download the Source Code
+   Unzip the provided archive (which can also be downloaded from GitHub)
+   OR
+   Clone the GitHub repository to your workspace.
+
+2. On your local PostGreSQL instance, create an empty database named "animal_behavior".
+
+   ```
+   psql
+   init db animal_behavior
+   ```
+
+3. Create a file named ".env" in the root directory of the project. Paste the following into the file, then replace the curly brackets {} and the text between them with the name of your local postgres username and password, respectively (the username is often "postgres", and the password may not be required):
+
+   ```
+   DATABASE_URL="postgresql://{YOUR POSTGRES USERNAME}:{YOUR POSTGRES PASSWORD}@localhost:5432/animal_behavior?schema=public"
+   NODE_ENV="development"
+   PORT = 3000
+   ```
+
+4. Now connect the server to your local instance of the database, perform a database migration, and seed the new database by running the following commands from the root directory of the project:
+
+   ```
+   npx prisma db push
+   npx prisma db seed
+   ```
+
+5. Everything should be ready to go now. To start the server run the following command from the root directory of your project:
+
+   ```
+   npm run dev
+
+   ```
+
+6. Now that the backend is up and running, install the frontend by following the README file incluced in the frontend repository.
