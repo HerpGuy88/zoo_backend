@@ -6,19 +6,9 @@ import { getUserFromRequest } from "../middleware";
 
 const router = new express.Router();
 
-//Get all (add pagination later)
-router.get("/", async function (req, res) {
-  try {
-    const observations = await prisma.observation.findMany({
-      include: { behavior: true, observer: true },
-      orderBy: { observed_at: "desc" },
-    });
-    res.send(observations);
-  } catch (error) {
-    console.log(error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
-  }
-});
+//=================================================
+//                    Create
+// ================================================
 
 router.post("/", getUserFromRequest, async function (req, res) {
   try {
@@ -32,7 +22,7 @@ router.post("/", getUserFromRequest, async function (req, res) {
       data: {
         behavior_id: Number(behavior_id),
         animal_name,
-        observer_id: 1,
+        observer_id: req.locals.id,
         observed_at: observed_at || new Date(),
       },
       include: { behavior: true, observer: true },
@@ -43,5 +33,30 @@ router.post("/", getUserFromRequest, async function (req, res) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
   }
 });
+
+//=================================================
+//                    Read
+// ================================================
+
+router.get("/", async function (req, res) {
+  try {
+    const observations = await prisma.observation.findMany({
+      include: { behavior: true, observer: true },
+      orderBy: { observed_at: "desc" },
+    });
+    res.send(observations);
+  } catch (error) {
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
+  }
+});
+
+//=================================================
+//                    Update
+// ================================================
+
+//=================================================
+//                    Destroy
+// ================================================
 
 export default router;

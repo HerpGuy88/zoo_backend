@@ -1,15 +1,7 @@
 import { prisma } from "../prisma";
 import { StatusCodes } from "http-status-codes";
-// import { auth } from './firebase'
-// import { UserRecord } from 'firebase-admin/auth'
-// import { DecodedIdToken } from 'firebase-admin/auth'
 import { Request, Response, NextFunction } from "express";
 import { IS_DEVELOPMENT } from "../config";
-
-type ErrorType = {
-  status: any;
-  body: any;
-};
 
 export async function getImpersonatedUser(fakeToken?: string) {
   if (!fakeToken) {
@@ -23,8 +15,10 @@ export async function getImpersonatedUser(fakeToken?: string) {
 }
 
 //There's a decent chance we'll end up farming out authentication to something like Firebase on the front-end, and we'll
-//handle authentication by tying users to an ID provided by some other service ("auth_ID" in the database) that we get from
-//the decoded token. In the development environment, we can accept
+//handle authentication by tying users to an ID provided by some other service ("auth_ID" in the model) that we get from
+//the decoded token. In the development environment, we can make things easier and facilitate devolopment by using just having
+//the frontend pass the unencoded userID in the authorization header.
+
 export async function getUserFromRequest(
   req: Request,
   res: Response,
@@ -35,7 +29,7 @@ export async function getUserFromRequest(
     console.log("no header found!");
     res.status(StatusCodes.UNAUTHORIZED).send("Authorization required.");
   }
-  console.log(header);
+
   const [bearerType, token] = header.split(" ");
 
   if (!token) {
@@ -59,17 +53,5 @@ export async function getUserFromRequest(
     }
   }
 
-  // //for deleted users
-  // if (user?.deleted_at) {
-  //   return [
-  //     null,
-  //     null,
-  //     {
-  //       status: StatusCodes.GONE,
-  //       body: 'User has been deleted',
-  //     },
-  //   ]
-  // }
-
-  //Add logic for authentication here.....
+  //Add additional logic for authentication here.....
 }

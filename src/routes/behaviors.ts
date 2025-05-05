@@ -1,12 +1,16 @@
 const express = require("express");
-import { User, Behavior, Observation } from "@prisma/client";
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../prisma";
-import { getUserFromRequest } from "../middleware";
 
 const router = new express.Router();
 
-//Get all
+//=================================================
+//                    Create
+// ================================================
+
+//=================================================
+//                    Read
+// ================================================
 router.get("/", async function (req, res) {
   try {
     const behaviors = await prisma.behavior.findMany({});
@@ -16,5 +20,13 @@ router.get("/", async function (req, res) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
   }
 });
+
+//=================================================
+//                    Update
+// ================================================
+
+//=================================================
+//                    Destroy
+// ================================================
 
 export default router;

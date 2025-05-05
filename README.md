@@ -12,11 +12,10 @@ PostGreSQL ~14.1 running locally
    OR
    Clone the GitHub repository to your workspace.
 
-2. On your local PostGreSQL instance, create an empty database named "animal_behavior".
+2. Now run the following to install dependencies:
 
    ```
-   psql
-   init db animal_behavior
+   npm i
    ```
 
 3. Create a file named ".env" in the root directory of the project. Paste the following into the file, then replace the curly brackets {} and the text between them with the name of your local postgres username and password, respectively (the username is often "postgres", and the password may not be required):
